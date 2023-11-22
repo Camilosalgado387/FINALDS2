@@ -1,0 +1,45 @@
+/* AddUserForm.css */
+
+.AddUserForm {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    margin: auto;
+  }
+  
+  .AddUserForm label {
+    font-weight: bold;
+    margin-top: 20px;
+  }
+  
+  .AddUserForm input, .AddUserForm select {
+    padding: 10px;
+    margin-top: 5px;
+  }
+  
+  .AddUserForm button, .AddUserForm imagen {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+  }
+  
+  .AddUserForm button:hover {
+    background-color: #45a049;
+  }
+  
+  .AddUserForm preview-image {
+    display: block;
+    margin-left: 0;
+    max-width: 100%;
+    height: auto;
+    
+  }
+  

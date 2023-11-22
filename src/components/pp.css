@@ -1,0 +1,35 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
+    text-align: center;
+  }
+  
+  .contenedor {
+    text-align: center;
+  }
+  
+  h1 {
+    margin-bottom: 50px;
+  }
+  
+  select, button {
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    color: white;
+    background-color: #4CAF50;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin: 10px;
+  }
+  
+  select:hover, button:hover {
+    background-color: #45a049;
+  }
+  
