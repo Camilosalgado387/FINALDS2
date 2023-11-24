@@ -9,15 +9,15 @@ const Pp =()=> {
     navigate('/Add')
   }
   const Upd = ()=>{
-    navigate('/Modify')
+    navigate('/consulta')
   }
   
   return (
     <div>
       <h1>CRUD</h1>
       <div className="contenedor">
-       <button type="submit" onClick={Add}>Add</button>
-       <button type="submit" onClick={Upd}>Log</button>
+       <button type="submit" onClick={Add}>Registro</button>
+       <button type="submit" onClick={Upd}>Consulta</button>
       </div>
     </div>
   );
