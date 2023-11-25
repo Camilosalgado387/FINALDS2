@@ -5,7 +5,6 @@ from typing import List
 from pydantic import BaseModel
 from sqlalchemy.exc import OperationalError
 
-# Configuración de la aplicación FastAPI
 app = FastAPI()
 
 # Configuración de la cadena de conexión pyodbc
@@ -14,9 +13,16 @@ DATABASE = "basededatos1"
 USERNAME = "sa"
 PASSWORD = "12345"
 
-# Construye la cadena de conexión
 connectionString = f'mssql+pyodbc://{USERNAME}:{PASSWORD}@{SERVER}/{DATABASE}?driver=ODBC+Driver+17+for+SQL+Server'
-print(f"Connection String: {connectionString}")
+
+# Intenta conectar al inicio de la aplicación
+try:
+    engine = create_engine(connectionString)
+    with engine.connect():
+        print("Conexión a la base de datos establecida correctamente al iniciar la aplicación.")
+except OperationalError as e:
+    print(f"Error de conexión a la base de datos al iniciar la aplicación: {e}")
+    raise
 
 # Configuración de SQLAlchemy con la cadena de conexión directa
 engine = create_engine(connectionString)
@@ -88,14 +94,3 @@ def delete_user_info(user_info_id: str, db: Session = Depends(get_db)):
         db.commit()
         return user_info
     raise HTTPException(status_code=404, detail="Información de usuario no encontrada")
-
-# Ruta de verificación de conexión
-@app.get("/check_connection")
-def check_connection():
-    try:
-        with engine.connect() as connection:
-            result = connection.execute("SELECT 1").scalar()
-            return {"message": "La conexión a la base de datos está funcionando correctamente."}
-    except Exception as e:
-        print(f"Error de conexión a la base de datos: {e}")
-        raise HTTPException(status_code=500, detail="Error interno del servidor")
