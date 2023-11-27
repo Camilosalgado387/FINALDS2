@@ -1,10 +1,5 @@
 
-  
-  
-  h1 {
-    margin-bottom: 50px;
-  }
-  
+
   select, button {
     padding: 10px 20px;
     border-radius: 5px;
@@ -15,6 +10,7 @@
     cursor: pointer;
     transition: background-color 0.3s ease;
     margin: 10px;
+    
   }
   
   select:hover, button:hover {
@@ -41,6 +37,7 @@
     z-index: -1; /* Para que esté detrás del contenido */
   }
   
+  
   .content {
     display: flex;
     flex-direction: column;
@@ -48,11 +45,13 @@
     justify-content: center;
     position: relative; /* Para colocar el contenido encima de la imagen */
     z-index: 1; /* Coloca el contenido encima de la imagen */
+    text-align: center;
   }
   
   .content p {
-    max-width: 600px; /* Ajusta el ancho máximo del párrafo según tu diseño */
+    max-width: 800px; /* Ajusta el ancho máximo del párrafo según tu diseño */
     margin: 0 auto; /* Esto centra el párrafo horizontalmente */
+  
   }
 
   .logo-container {
