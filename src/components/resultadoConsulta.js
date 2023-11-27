@@ -125,12 +125,15 @@ const PersonCard = ({ listOfPersons }) => {
   const [selectedPerson, setSelectedPerson] = useState(null);
   const [editModalVisible, setEditModalVisible] = useState(false);
 
+
   const openModal = (person) => {
     setSelectedPerson(person);
     setShowModal(true);
   };
 
-  const openEditModal = () => {
+
+  const openEditModal = (person) => {
+    setSelectedPerson(person);
     setEditModalVisible(true);
   };
 
@@ -151,7 +154,7 @@ const PersonCard = ({ listOfPersons }) => {
                 <MenuButton onClick={() => openModal(person)}>
                   <FiInfo />
                 </MenuButton>
-                <MenuButton onClick={() => openEditModal()}>
+                <MenuButton onClick={() => openEditModal(person)}>
                   <FiEdit />
                 </MenuButton>
               </MenuContainer>

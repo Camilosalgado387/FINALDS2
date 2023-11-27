@@ -21,8 +21,10 @@ const ActualizarU = ({ user, onClose, onSubmit }) => {
   const [emailError, setEmailError] = useState("");
   const [image, setImage] = useState(null);
 
+  
   useEffect(() => {
-    setUserData(user || {});
+    console.log(user)
+    setUserData(user);
     setEmailError("");
     setImage(user?.imagen || null);
   }, [user]);
@@ -96,7 +98,7 @@ const ActualizarU = ({ user, onClose, onSubmit }) => {
                   type="text"
                   name="firstName"
                   placeholder="Nombre"
-                  value={userData.firstName || ""}
+                  value={userData.nombre || ""}
                   onChange={handleInputChange}
                 />
               </Field>
@@ -105,7 +107,7 @@ const ActualizarU = ({ user, onClose, onSubmit }) => {
                   type="text"
                   name="lastName"
                   placeholder="Apellido"
-                  value={userData.lastName || ""}
+                  value={userData.apellido || ""}
                   onChange={handleInputChange}
                 />
               </Field>
@@ -114,7 +116,7 @@ const ActualizarU = ({ user, onClose, onSubmit }) => {
                   type="email"
                   name="email"
                   placeholder="Correo"
-                  value={userData.email || ""}
+                  value={userData.correo || ""}
                   onChange={handleEmailChange}
                 />
                 {emailError && <p className="error">{emailError}</p>}
@@ -131,7 +133,7 @@ const ActualizarU = ({ user, onClose, onSubmit }) => {
               <Field>
                 <select
                   name="docType"
-                  value={userData.docType || ""}
+                  value={userData.tipodeDocumento || ""}
                   placeholder="Tipo de Documento"
                   onChange={handleInputChange}
                 >
@@ -145,7 +147,7 @@ const ActualizarU = ({ user, onClose, onSubmit }) => {
                   type="text"
                   name="docNumber"
                   placeholder="Número de Documento"
-                  value={userData.docNumber || ""}
+                  value={userData.Identificacion || ""}
                   onChange={handleInputChange}
                   maxLength="10"
                 />
@@ -153,7 +155,7 @@ const ActualizarU = ({ user, onClose, onSubmit }) => {
               <Field>
                 <select
                   name="gender"
-                  value={userData.gender || ""}
+                  value={userData.genero || ""}
                   onChange={handleInputChange}
                   placeholder="Género"
                 >
@@ -168,7 +170,7 @@ const ActualizarU = ({ user, onClose, onSubmit }) => {
                   type="text"
                   name="phone"
                   placeholder="Teléfono"
-                  value={userData.phone || ""}
+                  value={userData.telefono || ""}
                   onChange={handleInputChange}
                   maxLength="10"
                 />
