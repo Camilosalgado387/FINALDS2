@@ -34,7 +34,7 @@ export const GlobalStyles = createGlobalStyle`
     border: 1px solid #ccc;
     &:focus {
       outline: 0 none;
-      border: 2px solid #A4FFB0;
+      border: 2px solid #88bef7;
     }
     &:disabled {
       cursor: not-allowed
@@ -57,6 +57,7 @@ export const GlobalStyles = createGlobalStyle`
       border: 6px solid transparent;
       background-clip: content-box;
   }
+
 `
 
 export const Field = styled.label`

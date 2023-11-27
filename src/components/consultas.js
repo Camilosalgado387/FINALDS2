@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import SearchForm from './Busqueda';
 import PersonCard from './resultadoConsulta';
+import Navbar from './Navegacion'; 
 import { datosDePrueba } from './datosprueba';
 
 const Container = styled.div`
@@ -14,9 +15,16 @@ const Container = styled.div`
 `;
 
 const ContentContainer = styled.div`
-  width: 100%; /* Ancho del contenido ajustable según tus necesidades */
-  max-width: 800px; /* Ancho máximo para evitar que se extienda demasiado */
-  margin-bottom: 20px; /* Espaciado inferior para separar del borde inferior del contenedor principal */
+
+width: 100%;
+max-width: 1200px;
+margin: 0 auto;
+margin-bottom: 20px; 
+background-color: #ffffff; /* Color de fondo */
+padding: 10px; /* Espaciado interno */
+border-radius: 8px; /* Bordes redondeados */
+height: 400px;
+
 `;
 
 const ConsultaPage = () => {
@@ -31,12 +39,14 @@ const ConsultaPage = () => {
   };
 
   const filteredPersons = datosDePrueba.filter((person) =>
-    person.identificacion.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  (person.Identificacion || "").toLowerCase().includes(searchTerm.toLowerCase())
+);
 
   return (
+   
     <Container>
-      <ContentContainer>
+      <Navbar/>
+      <ContentContainer className='grande'>
         <SearchForm
           searchTerm={searchTerm}
           onSearchChange={handleSearchChange}
