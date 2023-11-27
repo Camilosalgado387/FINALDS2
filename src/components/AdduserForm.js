@@ -15,6 +15,9 @@ import {
   PreviewImageWrapper,
   DeleteButton,
 } from "./addusercss";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import logo from  '../imagen/logo2.png'
 
 const AdduserForm = () => {
   const [user, setUser] = useState({});
@@ -41,6 +44,10 @@ const AdduserForm = () => {
     }
   };
 
+  const isNumeric = (value) => {
+    return /^\d+$/.test(value);
+  };
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
 
@@ -64,16 +71,51 @@ const AdduserForm = () => {
     setImage(null);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("User:", user);
-    // Aquí puedes agregar el código para agregar el usuario al sistema
+  const validateFileSize = (file) => {
+    const maxSize = 2 * 1024 * 1024; // 2 MB
+    return file.size <= maxSize;
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // Validaciones adicionales
+    if (!isNumeric(user.docNumber) || user.docNumber.length > 10) {
+      toast.error("Número de Documento inválido");
+      return;
+    }
+
+    if (isNumeric(user.firstName) || user.firstName.length > 30) {
+      toast.error("Primer Nombre inválido");
+      return;
+    }
+
+    if (isNumeric(user.lastName) || user.lastName.length > 60) {
+      toast.error("Apellidos inválidos");
+      return;
+    }
+
+    if (!isNumeric(user.phone) || user.phone.length !== 10) {
+      toast.error("Número de Celular inválido");
+      return;
+    }
+
+    if (!validateFileSize(image) || !user.docType || !user.firstName || !user.lastName || !user.email || !user.birthDate || !user.gender || !user.phone) {
+      toast.error("Por favor, complete todos los campos y asegúrese de que la imagen sea menor o igual a 2MB.");
+      return;
+    }
+
+    console.log("User:", user);
+    // Agregar código para agregar el usuario al sistema
+  };
   return (
+   
     <PopUp>
       <Modal>
         <ModalHeader>
+          <div className="logo-section">
+            <img src={logo} alt="Logo" className="modal-logo" />
+          </div>
           <ModalTitle>Registro</ModalTitle>
         </ModalHeader>
         <ModalBody>
@@ -201,6 +243,7 @@ const AdduserForm = () => {
       </Modal>
       <GlobalStyles />
     </PopUp>
+    
   );
 };
 
