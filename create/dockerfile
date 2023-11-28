@@ -1,0 +1,16 @@
+FROM python:3.8-slim-buster
+
+WORKDIR /CREATE
+
+# Copia los archivos de requisitos e instala las dependencias
+COPY requirements.txt requirements.txt
+RUN pip install -r requirements.txt
+
+# Copia el resto de los archivos del proyecto
+COPY . .
+
+# Expone el puerto en el que se ejecutará la aplicación
+EXPOSE 5000
+
+# Comando para ejecutar la aplicación
+

@@ -1,0 +1,57 @@
+version: '3'
+services:
+  ic:
+    build:
+      context: ./create
+      dockerfile: dockerfile
+    ports:
+      - '5000:5000'
+    depends_on:
+      - mysql
+    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "5000"]
+
+  id:
+    build:
+      context: ./delete
+      dockerfile: dockerfile
+    ports:
+      - '5001:5001'
+    depends_on:
+      - mysql
+    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "5001"]
+
+  is:
+    build:
+      context: ./select
+      dockerfile: dockerfile
+    ports:
+      - '5002:5002'
+    depends_on:
+      - mysql
+    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "5002"]
+
+  iu:
+    build:
+      context: ./update
+      dockerfile: dockerfile
+    ports:
+      - '5003:5003'
+    depends_on:
+      - mysql
+    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "5003"]
+
+  mysql:
+    image: mariadb:10.4.27
+    container_name: mariadb-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: personas
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - 3306:3306
+    volumes:
+      - mariadb_data:/var/lib/mysql
+
+volumes:
+  mariadb_data:

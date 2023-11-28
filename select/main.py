@@ -5,7 +5,8 @@ from sqlalchemy.orm import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 import json
-SQLALCHEMY_DATABASE_URL = "mysql+pymysql://root:@localhost:3306/personas"
+app = FastAPI()
+SQLALCHEMY_DATABASE_URL = "mysql+pymysql://user:password@mysql:3306/personas"
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 
 from sqlalchemy.ext.declarative import declarative_base
@@ -17,8 +18,8 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 class Persona(Base):
     __tablename__ = "personas"
-    docType = Column(Integer, primary_key=True)
-    docNumber = Column(String(255))
+    docType = Column(String(255))
+    docNumber = Column(String(255), primary_key=True)
     firstName = Column(String(255))
     secondName = Column(String(255))
     lastName = Column(String(255))
@@ -40,11 +41,11 @@ class PersonaCreate(BaseModel):
     email: str
     phone: str
 
-app = FastAPI()
+
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=['http://localhost:3000'],
+    allow_origins=['*'],
     allow_methods=['*'],
     allow_headers=['*']
 )
