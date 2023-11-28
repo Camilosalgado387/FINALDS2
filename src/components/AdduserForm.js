@@ -18,6 +18,8 @@ import {
 import {ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import logo from  '../imagen/logo2.png'
+import axios from "axios";
+import { API_URL } from "./env";
 
 const AdduserForm = () => {
   const [user, setUser] = useState({
@@ -125,15 +127,50 @@ const AdduserForm = () => {
     return file.size <= maxSize;
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-     
+  const onSubmit = (e, data={}) => {
+     e.preventDefault();
+    const currentDate = new Date();
+
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, "0"); // Sumamos 1 al mes porque en JavaScript los meses van de 0 a 11
+    const day = String(currentDate.getDate()).padStart(2, "0");
+    
+    const formattedDate = `${year}-${month}-${day}`;
+  
+    
     // Validar si todos los campos requeridos están completos
   if (!user.firstName || !user.lastName || !user.email || !user.birthDate || !user.docType || !user.docNumber || !user.gender || !user.phone) {
     toast.error("Todos los campos son obligatorios. Por favor, complete todos los campos antes de enviar el formulario.");
     return;
+  }else {
+     user.registrationDate = formattedDate;
+     console.log("User:", user.firstName);
+    
+     data["firstName"] = user.firstName
+     data["lastName"] = user.lastName
+     data["email"] = user.email
+     data["birthDate"] = user.birthDate
+     data["docType"] = user.docType
+     data["docNumber"] = user.docNumber
+     data["gender"] = user.gender
+     data["phone"] = user.phone
+     data["imagen"]= user.imagen
+     data["Registrationdate"] = user.registrationDate
+    
+     console.log("data:", data);
+    
+     axios
+            .post(API_URL + "colaborador", data)
+            .then((response) => {
+               
+            })
+            .catch((error) => {
+                console.log(error);
+            });
   }
-    console.log("User:", user);
+  
+
+   
     // Agregar código para agregar el usuario al sistema
   };
   return (
@@ -147,7 +184,7 @@ const AdduserForm = () => {
           <ModalTitle>Registro</ModalTitle>
         </ModalHeader>
         <ModalBody>
-          <form className="add-user-form" onSubmit={handleSubmit}>
+          <form className="add-user-form" onSubmit={onSubmit}>
             <Grid>
               <Field>
                 <input
@@ -265,7 +302,7 @@ const AdduserForm = () => {
               </Field>
             </Grid>
             <ModalActions>
-              <button type="submit">Agregar Usuario</button>
+              <button type="submit" >Agregar Usuario</button>
             </ModalActions>
           </form>
         </ModalBody>
