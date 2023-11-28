@@ -169,7 +169,7 @@ const PersonCard = ({ listOfPersons }) => {
                 <Text color="#777">
                   <Icon as={FiMail} /> {person.correo}
                 </Text>
-                <SmallText>Last updated 3 mins ago</SmallText>
+                <SmallText>{`Fecha de registro: ${person.FechaRegistro}`}</SmallText>
               </CardContent>
             </StyledCard>
           ))}

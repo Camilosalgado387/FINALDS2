@@ -15,38 +15,87 @@ import {
   PreviewImageWrapper,
   DeleteButton,
 } from "./addusercss";
-import { toast } from 'react-toastify';
+import {ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import logo from  '../imagen/logo2.png'
 
 const AdduserForm = () => {
-  const [user, setUser] = useState({});
-  const [emailError, setEmailError] = useState("");
+  const [user, setUser] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    birthDate: "",
+    docType: "",
+    docNumber: "",
+    gender: "",
+    phone: "",
+    imagen: null,
+  });
+  //const [emailError, setEmailError] = useState("");
   const [image, setImage] = useState(null);
 
-  const handleInputChange = (e) => {
+  /*const handleInputChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
-  };
+  };*/
 
-  const validateEmail = (email) => {
-    const re =
-      /^(([^<>()\\[\]\\.,;:\s@"]+(\.[^<>()\\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
+  const isNumeric = (value, maxLength) => {
+    const regex = new RegExp(`^\\d{1,${maxLength}}$`);
+    return regex.test(value);
   };
-
-  const handleEmailChange = (e) => {
-    const email = e.target.value;
-    if (validateEmail(email)) {
-      setUser({ ...user, email });
-      setEmailError("");
-    } else {
-      setEmailError("Por favor, ingrese un correo electrónico válido.");
+  
+  const isAlphabetic = (value, maxLength) => {
+    const regex = new RegExp(`^\\D{1,${maxLength}}$`);
+    return regex.test(value);
+  };
+  
+  const isPhoneNumber = (value) => /^\d{10}$/.test(value);
+  
+  const isEmail = (value) => {
+    const regex = /^(([^<>()\\[\]\\.,;:\s@"]+(\.[^<>()\\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return regex.test(String(value).toLowerCase());
+  };
+  
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+  
+    let isValid = true;
+    let errorMessage = "";
+  
+    switch (name) {
+      case "docNumber":
+        isValid = isNumeric(value, 10);
+        errorMessage = "Número de Documento inválido. Debe contener solo dígitos y tener hasta 10 caracteres.";
+        break;
+      case "firstName":
+        isValid = isAlphabetic(value, 30);
+        errorMessage = "Dato invalido. No debe contener caracteres numéricos y contener hasta 30 caracteres.";
+        break;
+      case "lastName":
+        isValid = isAlphabetic(value, 60);
+        errorMessage = "Dato invalido. No debe contener caracteres numéricos y contener hasta 60 caracteres.";
+        break;
+      case "phone":
+        isValid = isPhoneNumber(value);
+        errorMessage = "Número de Celular inválido. Debe contener solo 10 dígitos.";
+        break;
+      case "email":
+        isValid = isEmail(value);
+        errorMessage = "Por favor, ingrese un correo electrónico válido.";
+        break;
+      default:
+        break;
     }
+  
+    if (!isValid) {
+      toast.error(errorMessage);
+    }
+  
+    // Actualiza el estado con el nuevo valor independientemente de si es válido o no
+    setUser({ ...user, [name]: value });
   };
+  
 
-  const isNumeric = (value) => {
-    return /^\d+$/.test(value);
-  };
+  
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -78,33 +127,12 @@ const AdduserForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Validaciones adicionales
-    if (!isNumeric(user.docNumber) || user.docNumber.length > 10) {
-      toast.error("Número de Documento inválido");
-      return;
-    }
-
-    if (isNumeric(user.firstName) || user.firstName.length > 30) {
-      toast.error("Primer Nombre inválido");
-      return;
-    }
-
-    if (isNumeric(user.lastName) || user.lastName.length > 60) {
-      toast.error("Apellidos inválidos");
-      return;
-    }
-
-    if (!isNumeric(user.phone) || user.phone.length !== 10) {
-      toast.error("Número de Celular inválido");
-      return;
-    }
-
-    if (!validateFileSize(image) || !user.docType || !user.firstName || !user.lastName || !user.email || !user.birthDate || !user.gender || !user.phone) {
-      toast.error("Por favor, complete todos los campos y asegúrese de que la imagen sea menor o igual a 2MB.");
-      return;
-    }
-
+     
+    // Validar si todos los campos requeridos están completos
+  if (!user.firstName || !user.lastName || !user.email || !user.birthDate || !user.docType || !user.docNumber || !user.gender || !user.phone) {
+    toast.error("Todos los campos son obligatorios. Por favor, complete todos los campos antes de enviar el formulario.");
+    return;
+  }
     console.log("User:", user);
     // Agregar código para agregar el usuario al sistema
   };
@@ -128,6 +156,7 @@ const AdduserForm = () => {
                   placeholder="Nombre"
                   value={user.firstName}
                   onChange={handleInputChange}
+                  
                 />
               </Field>
               <Field>
@@ -145,9 +174,9 @@ const AdduserForm = () => {
                   name="email"
                   placeholder="Correo"
                   value={user.email}
-                  onChange={handleEmailChange}
+                  onChange={handleInputChange}
                 />
-                {emailError && <p className="error">{emailError}</p>}
+                
               </Field>
               <Field>
                 <input
@@ -177,7 +206,7 @@ const AdduserForm = () => {
                   value={user.docNumber}
                   placeholder="Número de Documento"
                   onChange={handleInputChange}
-                  maxLength="10"
+                  
                 />
               </Field>
               <Field>
@@ -200,7 +229,7 @@ const AdduserForm = () => {
                   value={user.phone}
                   placeholder="Teléfono"
                   onChange={handleInputChange}
-                  maxLength="10"
+                  
                 />
               </Field>
               <Field>
@@ -242,6 +271,7 @@ const AdduserForm = () => {
         </ModalBody>
       </Modal>
       <GlobalStyles />
+      <ToastContainer />
     </PopUp>
     
   );
