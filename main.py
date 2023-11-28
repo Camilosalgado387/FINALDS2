@@ -21,23 +21,65 @@ redis = get_redis_connection(
   
 class Info(HashModel):
     docType: str
-    docNumber: int
+    docNumber: float
     firstName: str
     secondName: str
     lastName: str
     birthDate: str
     gender: str 
     email: str
-    phone: int
+    phone: float
 
     class Meta:
         database = redis
+
+class DeleteInfo(HashModel):
+    docType: str
+    docNumber: float
+    firstName: str
+    secondName: str
+    lastName: str
+    birthDate: str
+    gender: str 
+    email: str
+    phone: float
 
 @app.get('/')
 def all():
     return [format(pk) for pk in Info.all_pks()]
 
+def format_info(info: Info):
+    return {
+        'id': info.pk,
+        'docType': info.docType,
+        'docNumber': info.docNumber,
+        'firstName': info.firstName,
+        'secondName': info.secondName,
+        'lastName': info.lastName,
+        'birthDate': info.birthDate,
+        'gender': info.gender, 
+        'email': info.email,
+        'phone': info.phone
+    }
+
+
+@app.get('/UserInfo/{docNumber}', response_model=Info)
+def get_user_by_doc_number(doc_number: float):
+    print(doc_number)
+    try:
+        info = Info.get_by_field("docNumber", doc_number)
+        
+        if info:
+            return format_info(info)
+        else:
+            raise HTTPException(status_code=404, detail="User not found")
+    except Exception as e:
+        print(f"Error: {e}")
+        raise HTTPException(status_code=500, detail="Internal Server Error")
+
+
 def format(pk: str):
+
     info = Info.get(pk)
 
     return{
